@@ -1,0 +1,24 @@
+{
+    "languages": ["pt-BR", "en-US"],
+    "resources": {
+      "app.header.home": {
+        "pt-BR": "Inicio",
+        "en-US": "Home"
+      },
+      "app.header.search": {
+        "pt-BR": "Buscar",
+        "en-US": "Search"
+      },
+      "app.header.add-post": {
+        "pt-BR": "Nova publicao",
+        "en-US": "New Post"
+      },
+      "app.header.save-post": {
+        "pt-BR": "Nova publicao",
+        "en-US": "New Post"
+      }
+    }
+  }
+
+
+
