@@ -9,11 +9,9 @@ export default class AwesomeI18NPlugin {
   }
 
   apply(compiler) {
+    const pluginName = AwesomeI18NPlugin.name;
+
     const isWebpack5 = compiler.webpack ? parseInt(compiler.webpack.version, 10) === 5 : false;
-    this.buildLocales();
-    compiler.hooks.done.tap('AwesomeI18NPlugin', ({ compilation }) => {
-      compilation.fileDependencies.add(this.options.file);
-    });
 
     compiler.hooks.watchRun.tap('WatchRun', (comp) => {
       const changedTimes = isWebpack5
@@ -31,10 +29,13 @@ export default class AwesomeI18NPlugin {
       });
 
       if (!files.length) {
-        return;
-      }
 
-      this.buildLocales();
+      }
+    });
+
+    compiler.hooks.emit.tapAsync(pluginName, (compilation, callback) => {
+      compilation.assets = Object.assign(compilation.assets, this.buildLocales());
+      callback();
     });
   }
 
@@ -43,13 +44,13 @@ export default class AwesomeI18NPlugin {
     try {
       const content = readFileSync(file, { encoding: 'utf-8' });
       const { languages, resources } = JSON.parse(content);
-      buildI18nLocales({ 
-        outPath, 
-        languages, 
-        resources, 
+      return buildI18nLocales({
+        outPath,
+        languages,
+        resources,
         keysType: this.options.genKeysTypes,
-        keysTypesFile: this.options.keysTypesFile
-       });
+        keysTypesFile: this.options.keysTypesFile,
+      });
     } catch (e) {
       console.error(e);
     }
