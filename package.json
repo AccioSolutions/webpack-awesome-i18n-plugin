@@ -1,6 +1,6 @@
 {
   "name": "@acciosolutions/webpack-awesome-i18n-plugin",
-  "version": "1.2.0",
+  "version": "5.0.0",
   "description": "Write ii18n translations in one file",
   "main": "dist/cjs.js",
   "dependencies": {},

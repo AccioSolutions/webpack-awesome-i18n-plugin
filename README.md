@@ -17,20 +17,100 @@
 
 ### Use
 
+
+#### webpack config
+
 ```js
 const AwesomeI18NPlugin = require('@acciosolutions/webpack-awesome-i18n-plugin');
 const path = require('path');
 
 module.exports = {
   mode: 'development',
-  entry: './demo/index.js',
+  entry: './index.js',
+  output: {
+    path: path.resolve("dist/")
+  },
   plugins: [
     new AwesomeI18NPlugin({
-        file: path.resolve('./demo/i18n.json'),
-        localesDir: path.resolve('./demo/locales'),
+        // path to your translate tokens file
+        file: path.resolve('./i18n/i18n.json'),
+        // output dir of languages json
+        localesDir: 'locales',
+
+        // optionally you can create an typescript enum with each transkation key for type assistence
         genKeysTypes: true,
-        keysTypesFile: path.resolve('./demo/keys.ts')
+        keysTypesFile: path.resolve('./i18n/keys.ts')
     }),
   ],
 };
+```
+
+#### i18next config example
+
+```ts
+import { initReactI18next } from 'react-i18next';
+
+import i18n from 'i18next';
+import HttpApi from 'i18next-http-backend';
+
+i18n
+  .use(HttpApi)
+  .use(initReactI18next) // passes i18n down to react-i18next
+  .init({
+    lng: 'pt-BR',
+    fallbackLng: 'en-US',
+
+    interpolation: {
+      escapeValue: false,
+    },
+    backend: {
+      loadPath: '/locales/{{lng}}.json',
+    },
+  });
+```
+
+#### Single token file
+```json
+// i18n/i18n.json
+{
+  {
+    "languages": ["pt-BR", "en-US"],
+    "resources": {
+      "app.header.home": {
+        "pt-BR": "Inicio",
+        "en-US": "Home"
+      },
+      "app.header.search": {
+        "pt-BR": "Buscar",
+        "en-US": "Search"
+      },
+    }
+  }
+}
+```
+
+will result in two jsons:
+```json
+// ./dist/locales/pt-BR.json
+{
+    "app": {
+        "header": {
+            "home": "Inicio",
+            "search": "Buscar",
+            "add-post": "Nova publicao",
+            "save-post": "Nova publicao"
+        }
+    }
+}
+// ./dist/locales/en-US.json
+{
+    "app": {
+        "header": {
+            "home": "Home",
+            "search": "Search",
+            "add-post": "New Post",
+            "save-post": "New Post"
+        }
+    }
+}
 ```
