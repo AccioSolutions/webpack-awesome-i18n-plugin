@@ -14,9 +14,17 @@
 </div>
 
 
+## Install
+
+for webpack 5
+$ `npm i -D @acciosolutions/webpack-awesome-i18n-plugin@5.x.x`
+
+for webpack 4
+$ `npm i -D @acciosolutions/webpack-awesome-i18n-plugin@4.x.x`
+
+
 
 ### Use
-
 
 #### webpack config
 
