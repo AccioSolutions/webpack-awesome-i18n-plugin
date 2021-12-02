@@ -18,10 +18,10 @@ export default class AwesomeI18NPlugin {
     compiler.hooks.thisCompilation.tap(pluginName, compilation => {
       compilation.fileDependencies.add(this.options.file);
 
-      const changedTimes = isWebpack5 
-        ? compiler.watchFileSystem.watcher.getTimes() 
-        : (compiler.watchFileSystem.wfs || compiler.watchFileSystem).watcher.mtimes;
-        
+      const changedTimes = isWebpack5
+        ? compiler.watchFileSystem.watcher.getTimes() || {}
+        : (compiler.watchFileSystem.wfs || compiler.watchFileSystem).watcher.mtimes || {};
+
       const { startTime = 0 } = compiler.watchFileSystem.watcher;
       if (!changedTimes[this.options.file] || (!!path.extname(this.options.file) && changedTimes[this.options.file] > startTime)) {
 
